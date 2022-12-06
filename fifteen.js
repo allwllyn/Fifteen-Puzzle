@@ -1,46 +1,48 @@
 // Andrew Llewellyn - Fall 2022
-//Fifteen puzzle script file
+// Fifteen puzzle script file
 
 
-//I'm using vmin instead px so the game scales to different browser sizes
-//I also leave the top right corner as the empty space instead of bottom right
-//multple tiles can be moved at once, moving multiple tiles at same time counts as one move
+// I"m using vmin instead px so the game scales to different browser sizes
+// I also leave the top right corner as the empty space instead of bottom right
+// multple tiles can be moved at once
+// moving multiple tiles at same time counts as one move
 
+// assignment says to use "use strict", but JSLint says to remove it
 
-"use strict";
+//jslint options: browser, for, long, this, white
+//jslint gives error on my win alert
 
-var tile; 
-var moveCounter = 0;
-var winAlert;
+var tile;
+var	moveCounter = 0;
 var timer;
-var emptyY;
+var	emptyY;
 var emptyX;
-var imgURL = "url('background.png')"
-var displayNumbers = false;
-var oneIndex;
-var twoIndex;
+var	imgURL = "url('background.png')";
+var	displayNumbers = false;
+var	oneIndex;
+var	twoIndex;
 
 
 //initialize location of empty tile space
-//I'm using top right as empty
-emptyX = '60vmin'; 
-emptyY = '0vmin';
+//I"m using top right as empty
+emptyX = "60vmin"; 
+emptyY = "0vmin";
 
 
  window.onload = function ()
 {
-	var shuffle = document.getElementById('shuffleButton');
-	var toggleNumbers = document.getElementById('numberToggle');
-
-
-	var gameBoard = document.getElementById('gameboard');
-	tile = gameBoard.getElementsByTagName('div'); 
+	var shuffle = document.getElementById("shuffleButton");
+	var toggleNumbers = document.getElementById("numberToggle");
+	var gameBoard = document.getElementById("gameboard");
+	var i;
+	var j;
+	tile = gameBoard.getElementsByTagName("div"); 
 
 		
-	//set up game tiles ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-	for (var i=0; i<tile.length; i++) 
+	//set up game tiles ––––––––––––––––––––––––––––––––––––––––––––––––––––––
+	for (i=0; i<tile.length; i+= 1) 
 	{
-		tile[i].className = 'gametile'; 
+		tile[i].className = "gametile"; 
 		tile[i].style.color = "rgba(0,0,0,0)";
 		tile[i].style.textShadow = "none";
 		
@@ -48,27 +50,27 @@ emptyY = '0vmin';
 		//my image looks better with top right corner missing, this makes the top right corner the empty space
 		if(i >= 3){
 		
-		tile[i].style.left = ((i+1)%4*20)+'vmin'; 
-		tile[i].style.top = (parseInt((i+1)/4)*20) + 'vmin';
-		tile[i].style.backgroundPosition= '-' + tile[i].style.left + ' ' + '-' + tile[i].style.top; 
+		tile[i].style.left = ((i+1)%4*20)+"vmin"; 
+		tile[i].style.top = (parseInt((i+1)/4)*20) + "vmin";
+		tile[i].style.backgroundPosition= "-" + tile[i].style.left + " " + "-" + tile[i].style.top; 
 		tile[i].style.backgroundImage=imgURL;
-		tile[i].style.backgroundSize= '80vmin';
+		tile[i].style.backgroundSize= "80vmin";
 
 		}
 
 		else{
 		
-		tile[i].style.left = (i%4*20)+'vmin';
+		tile[i].style.left = (i%4*20)+"vmin";
 
-		tile[i].style.top = (parseInt(i/4)*20) + 'vmin';
+		tile[i].style.top = (parseInt(i/4)*20) + "vmin";
 
-		tile[i].style.backgroundPosition= '-' + tile[i].style.left + ' ' + '-' + tile[i].style.top; 
+		tile[i].style.backgroundPosition= "-" + tile[i].style.left + " " + "-" + tile[i].style.top; 
 		tile[i].style.backgroundImage=imgURL;
-		tile[i].style.backgroundSize= '80vmin';
+		tile[i].style.backgroundSize= "80vmin";
 		}
 
 
-		// highlight moveable tiles ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+		// highlight moveable tiles –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 		tile[i].onmouseover = function() 
 		{
 			var curr = this;
@@ -80,7 +82,7 @@ emptyY = '0vmin';
 
 		
 				// check move multiple left –––––––––––––––––––––––––––––––––––––
-				if(parseInt(this.style.left) > 0 && this.style.top == emptyY){
+				if(parseInt(this.style.left) > 0 && this.style.top === emptyY){
 					if(checkOneLeft(this)){
 						this.style.border = "0.5vmin solid rgba(255, 255, 150, .7)";
 						this.style.fontWeight = "bolder";            
@@ -100,7 +102,7 @@ emptyY = '0vmin';
 				}
 				
 				// check move multiple right –––––––––––––––––––––––––––––––––––––
-				if(parseInt(this.style.left) < 60 && this.style.top == emptyY){
+				if(parseInt(this.style.left) < 60 && this.style.top === emptyY){
 
 					if(checkOneRight(this)){
 						this.style.border = "0.5vmin solid rgba(255, 255, 150, .7)";
@@ -120,7 +122,7 @@ emptyY = '0vmin';
 				}
 
 				// check move multiple up –––––––––––––––––––––––––––––––––––––
-				if(parseInt(this.style.top) > 0 && this.style.left == emptyX){
+				if(parseInt(this.style.top) > 0 && this.style.left === emptyX){
 
 					if(checkOneUp(this)){
 						this.style.border = "0.5vmin solid rgba(255, 255, 150, .7)";
@@ -141,7 +143,7 @@ emptyY = '0vmin';
 
 				}
 				// check move multiple down –––––––––––––––––––––––––––––––––––––
-				if(parseInt(this.style.top) < 60 && this.style.left == emptyX){
+				if(parseInt(this.style.top) < 60 && this.style.left === emptyX){
 
 					if(checkOneDown(this)){
 						this.style.border = "0.5vmin solid rgba(255, 255, 150, .7)";
@@ -159,18 +161,15 @@ emptyY = '0vmin';
 						tile[getOneDown(tile[getOneDown(curr)])].style.fontWeight = "bolder";
 					}
 				}
-
-				
-			
-		}
+		};
 
 		tile[i].onmouseout = function() 
 		{
-			for(var j = 0; j<tile.length;j++){
+			for(j = 0; j<tile.length;j+= 1){
 				tile[j].style.border = "1px solid black";
 				tile[j].style.fontWeight = "normal"; 
 			}
-		}
+		};
 
 		tile[i].onclick = function() 
 		{
@@ -178,7 +177,7 @@ emptyY = '0vmin';
 			
 			if (checkMove(parseInt(this.innerHTML))){
 				move(curr.innerHTML-1);
-				moveCounter++; 
+				moveCounter+= 1; 
 				if (imageComplete()){
 					showAlert(); 
 				}
@@ -187,12 +186,12 @@ emptyY = '0vmin';
 
 			//move multiple tiles left –––––––––––––––––––––––––––––––––––––––––––––
 
-			if(parseInt(this.style.left) > 0 && this.style.top == emptyY) {
+			if(parseInt(this.style.left) > 0 && this.style.top === emptyY) {
 
 				if (moveLeft(emptyX,emptyY, getOneLeft(curr))){
 					move(parseInt(getOneLeft(curr)));
 					move(curr.innerHTML-1);
-					moveCounter++;
+					moveCounter+= 1;
 					if (imageComplete()){
 						showAlert(); 
 					}
@@ -204,7 +203,7 @@ emptyY = '0vmin';
 						move(parseInt(getOneLeft(tile[getOneLeft(curr)])));
 						move(parseInt(getOneLeft(curr)));
 						move(curr.innerHTML-1);
-						moveCounter++;
+						moveCounter+= 1;
 						if (imageComplete()){
 							showAlert(); 
 						}
@@ -215,23 +214,23 @@ emptyY = '0vmin';
 
 			//move multiple tiles right –––––––––––––––––––––––––––––––––––––––––––––
 
-			if(parseInt(this.style.left) < 60 && this.style.top == emptyY){
+			if(parseInt(this.style.left) < 60 && this.style.top === emptyY){
 
 				if (moveRight(emptyX,emptyY, getOneRight(curr))){
 					move(parseInt(getOneRight(curr)));
 					move(curr.innerHTML-1);
-					moveCounter++;
+					moveCounter+= 1;
 					if (imageComplete()){
 						showAlert(); 
 					}
 					return;
 				}
 
-				else if (moveRight(emptyX,emptyY, getOneRight(tile[getOneRight(curr)]))){
+				if (moveRight(emptyX,emptyY, getOneRight(tile[getOneRight(curr)]))){
 					move(parseInt(getOneRight(tile[getOneRight(curr)])));
 					move(parseInt(getOneRight(curr)));
 					move(curr.innerHTML-1);
-					moveCounter++;
+					moveCounter+= 1;
 					if (imageComplete()){
 						showAlert(); 
 					}
@@ -239,12 +238,12 @@ emptyY = '0vmin';
 				}
 			}
 			//move multiple tiles up –––––––––––––––––––––––––––––––––––––––––––––
-			if(parseInt(this.style.top) > 0 && this.style.left == emptyX){
+			if(parseInt(this.style.top) > 0 && this.style.left === emptyX){
 
 				if (moveUp(emptyX,emptyY, getOneUp(curr))){
 					move(parseInt(getOneUp(curr)));
 					move(curr.innerHTML-1);
-					moveCounter++;
+					moveCounter+= 1;
 					if (imageComplete()){
 						showAlert(); 
 					}
@@ -257,7 +256,7 @@ emptyY = '0vmin';
 						move(parseInt(getOneUp(tile[getOneUp(curr)])));
 						move(parseInt(getOneUp(curr)));
 						move(curr.innerHTML-1);
-						moveCounter++;
+						moveCounter+= 1;
 						if (imageComplete()){
 							showAlert(); 
 						}
@@ -266,95 +265,95 @@ emptyY = '0vmin';
 				}
 			}
 			//move multiple tiles Down –––––––––––––––––––––––––––––––––––––––––––––
-			if(parseInt(this.style.top) < 60 && this.style.left == emptyX){
+			if(parseInt(this.style.top) < 60 && this.style.left === emptyX){
 
 				if (moveDown(emptyX,emptyY, getOneDown(curr))){
 					move(parseInt(getOneDown(curr)));
 					move(curr.innerHTML-1);
-					moveCounter++;
+					moveCounter+= 1;
 					if (imageComplete()){
 						showAlert(); 
 					}
 					return;
 				}
 
-				else if (moveDown(emptyX,emptyY, getOneDown(tile[getOneDown(curr)]))){
+				if (moveDown(emptyX,emptyY, getOneDown(tile[getOneDown(curr)]))){
 					move(parseInt(getOneDown(tile[getOneDown(curr)])));
 					move(parseInt(getOneDown(curr)));
 					move(curr.innerHTML-1);
-					moveCounter++;
+					moveCounter+= 1;
 					if (imageComplete()){
 						showAlert(); 
 					}
 					return;
 				}
 			}
-
-
-		}
+		};
 	}
 	 
 	 //displays number labels on tiles as hint
 	toggleNumbers.onclick = function(){
 		displayNumbers = !displayNumbers;
 
-		if(displayNumbers == false){
-			for(var i=0; i<tile.length; i++)
+		if(displayNumbers === false){
+			for(i=0; i<tile.length; i+= 1)
 			{
 				tile[i].style.color = "rgba(0,0,0,0)";
 				tile[i].style.textShadow = "none";
 			}
 		}
 		else{
-			for(var i=0; i<tile.length; i++)
+			for(i=0; i<tile.length; i+= 1)
 			{
 				tile[i].style.color = "rgba(255,255,255,1.0)";
-				tile[i].style.textShadow = "-1px 3px 5px black"
+				tile[i].style.textShadow = "-1px 3px 5px black";
 			}
 		}
-	}
+	};
 	
 	//shuffles the pieces
 	shuffle.onclick = function(){
-		for (var i=0; i<48; i++) 
+		var rand;
+		var temp;
+		for (i=0; i<48; i+= 1) 
 		{
-			var rand = parseInt(Math.floor(Math.random()* 4));
+			rand = parseInt(Math.floor(Math.random()* 4));
 
-			if (rand == 0){
-				var temp = shufUp(emptyX, emptyY); 
+			if (rand === 0){
+				temp = shufUp(emptyX, emptyY); 
 
-				if ( temp != -1){
+				if ( temp !== -1){
 					move(temp);
 				}
 			}
 
-			if (rand == 1){
-				var temp = shufDown(emptyX, emptyY);
+			if (rand === 1){
+				temp = shufDown(emptyX, emptyY);
 
-				if ( temp != -1){
+				if ( temp !== -1){
 					move(temp);
 				}
 			}
 
-			if (rand == 2){
+			if (rand === 2){
 
-				var temp = shufLeft(emptyX, emptyY);
+				temp = shufLeft(emptyX, emptyY);
 
-				if ( temp != -1){
+				if ( temp !== -1){
 					move(temp);
 				}
 			}
 
-			if (rand == 3){
-				var temp = shufRight(emptyX, emptyY, i);
+			if (rand === 3){
+				temp = shufRight(emptyX, emptyY, i);
 
-				if (temp != -1){
+				if (temp !== -1){
 					move(temp);
 				}
 			}
 		}
-	}
-}
+	};
+};
 
 // check if selected tile is able to move ––––––––––––––––––––––––––––––––––––––––––––––––––
 function checkMove(divMark){
@@ -362,30 +361,28 @@ function checkMove(divMark){
 	var i = divMark - 1;
 
 	if (moveRight(emptyX, emptyY, i)){
-		console.log("move right called");
 		return true;
 	}
 
 	if (moveUp(emptyX, emptyY, i)){
-		console.log("move up called");
 		return true;
 	}
 
 	if (moveDown(emptyX, emptyY, i)){
-		console.log("move down called");
 		return true;
 	}
 
 	if (moveLeft(emptyX, emptyY, i)){
-		console.log("move left called");
 		return true;
 	}
 }
 
 function checkOneLeft(t){
 		var temp = getOneLeft(t);
-		if(temp != -1)
-		var oneLeft = tile[temp];
+		var oneLeft;
+		if(temp !== -1){
+		oneLeft = tile[temp];
+		}
 		if(moveLeft(emptyX,emptyY, temp)){
 			return true;           
 		}
@@ -404,12 +401,10 @@ function getOneLeft(t){
 	var oneLeftIndex;
 	var oneLeftX = (tileRect.left - widthFactor); // goes into middle of next tile
 	var oneLeftY = tileRect.top; // goes into middle of next tile
-	if(document.elementFromPoint(oneLeftX, oneLeftY).className == 'gametile'){
-		console.log("called if game tile")
+	if(document.elementFromPoint(oneLeftX, oneLeftY).className === "gametile"){
 		oneLeft = document.elementFromPoint( oneLeftX,oneLeftY );
 		oneLeftDivMark = parseInt(oneLeft.innerHTML);
 		oneLeftIndex = oneLeftDivMark -1;
-		console.log("got one right: index = "+ oneLeftIndex);
 		return oneLeftIndex;
 	}
 	else{
@@ -418,15 +413,17 @@ function getOneLeft(t){
 }
 
 function checkOneRight(t){
-		var temp = getOneRight(t);
-		if(temp != -1)
-		var oneRight = tile[temp];
-		if(moveRight(emptyX,emptyY, temp)){
-			return true;           
-		}
-		else{
-			return false;
-		}
+	var temp = getOneRight(t);
+	var oneRight;
+	if(temp !== -1){
+		oneRight = tile[temp];
+	}
+	if(moveRight(emptyX,emptyY, temp)){
+		return true;           
+	}
+	else{
+		return false;
+	}
 	
 }
 
@@ -440,12 +437,10 @@ function getOneRight(t){
 	var oneRightIndex;
 	var oneRightX = (tileRect.left + widthFactor); // goes into middle of next tile
 	var oneRightY = tileRect.top; // goes into middle of next tile
-	if(document.elementFromPoint(oneRightX, oneRightY).className == 'gametile'){
-		console.log("called if game tile")
+	if(document.elementFromPoint(oneRightX, oneRightY).className === "gametile"){
 		oneRight = document.elementFromPoint( oneRightX,oneRightY );
 		oneRightDivMark = parseInt(oneRight.innerHTML);
 		oneRightIndex = oneRightDivMark -1;
-		console.log("got one Right: index = "+ oneRightIndex);
 		return oneRightIndex;
 	}
 	else{
@@ -454,15 +449,17 @@ function getOneRight(t){
 }
 
 function checkOneUp(t){
-		var temp = getOneUp(t);
-		if(temp != -1)
-		var oneUp = tile[temp];
-		if(moveUp(emptyX,emptyY, temp)){
-			return true;           
-		}
-		else{
-			return false;
-		}
+	var temp = getOneUp(t);
+	var oneUp;
+	if(temp !== -1){
+		oneUp = tile[temp];
+	}
+	if(moveUp(emptyX,emptyY, temp)){
+		return true;           
+	}
+	else{
+		return false;
+	}
 }
 
 function getOneUp(t){
@@ -475,12 +472,10 @@ function getOneUp(t){
 	var oneUpIndex;
 	var oneUpY = (tileRect.top - heightFactor); // goes into middle of next tile
 	var oneUpX = tileRect.left; // goes into middle of next tile
-	if(document.elementFromPoint(oneUpX, oneUpY).className == 'gametile'){
-		console.log("called if game tile")
+	if(document.elementFromPoint(oneUpX, oneUpY).className === "gametile"){
 		oneUp = document.elementFromPoint( oneUpX,oneUpY );
 		oneUpDivMark = parseInt(oneUp.innerHTML);
 		oneUpIndex = oneUpDivMark -1;
-		console.log("got one up: index = "+ oneUpIndex);
 		return oneUpIndex;
 	}
 	else{
@@ -489,15 +484,17 @@ function getOneUp(t){
 }
 
 function checkOneDown(t){
-		var temp = getOneDown(t);
-		if(temp != -1)
-		var oneDown = tile[temp];
-		if(moveDown(emptyX,emptyY, temp)){
-			return true;           
-		}
-		else{
-			return false;
-		}
+	var temp = getOneDown(t);
+	var oneDown;
+	if(temp !== -1){
+		oneDown = tile[temp];
+	}
+	if(moveDown(emptyX,emptyY, temp)){
+		return true;           
+	}
+	else{
+		return false;
+	}
 }
 
 function getOneDown(t){
@@ -509,12 +506,10 @@ function getOneDown(t){
 	var oneDownIndex;
 	var oneDownY = parseInt(tileRect.top) + heightFactor; // goes into middle of next tile
 	var oneDownX = tileRect.left; // goes into middle of next tile
-	if(document.elementFromPoint(oneDownX, oneDownY).className == 'gametile'){
-		console.log("called if game tile")
+	if(document.elementFromPoint(oneDownX, oneDownY).className === "gametile"){
 		oneDown = document.elementFromPoint( oneDownX,oneDownY );
 		oneDownDivMark = parseInt(oneDown.innerHTML);
 		oneDownIndex = oneDownDivMark -1;
-		console.log("got one down: index = "+ oneDownIndex);
 		return oneDownIndex;
 	}
 	else{
@@ -525,7 +520,7 @@ function getOneDown(t){
 
 //gameover functions –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 function winAlert(){
-		alert('You won in ' + moveCounter + ' moves!'); 
+		alert("You won in " + moveCounter + " moves!"); 
 }
 
 
@@ -542,20 +537,23 @@ function resetCount(){
 
 function imageComplete(){
 	var correctPosition = true;
+	var i;
+	var top;
+	var left;
 
-	for (var i = 0; i < tile.length; i++) 
+	for (i = 0; i < tile.length; i+= 1) 
 	{
-		var top = parseInt(tile[i].style.top);
-		var left = parseInt(tile[i].style.left);
+		top = parseInt(tile[i].style.top);
+		left = parseInt(tile[i].style.left);
 
 		if(i < 3){
-			if (left != (i%4*20) || top != parseInt(i/4)*20){
+			if (left !== (i%4*20) || top !== parseInt(i/4)*20){
 				correctPosition = false;
 				break;
 			}
 		}
 		else{
-			if (left != ((i+1)%4*20) || top != parseInt((i+1)/4)*20){
+			if (left !== ((i+1)%4*20) || top !== parseInt((i+1)/4)*20){
 				correctPosition = false;
 				break;
 			}
@@ -575,18 +573,19 @@ function move(tileIndex){
 
 	tile[tileIndex].style.left = emptyX;
 	emptyX = temp;
-	// moveCounter ++;
+	// moveCounter += 1;
 }
 
 // shuffle moves ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 function shufRight(x, y){
+	var i;
 	var emptX = parseInt(x); // emptyX
 	var emptY = parseInt(y); // emptyY
 
 	if (emptX > 0){
-		for (var i = 0; i < tile.length; i++) 
+		for (i = 0; i < tile.length; i+= 1) 
 		{
-			if (parseInt(tile[i].style.left) + 20 == emptX && parseInt(tile[i].style.top) == emptY){
+			if (parseInt(tile[i].style.left) + 20 === emptX && parseInt(tile[i].style.top) === emptY){
 				return i;
 			} 
 		}
@@ -596,13 +595,15 @@ function shufRight(x, y){
 		return -1;
 	}
 }
+
 function shufLeft (x, y){
+	var i;
 	var emptX = parseInt(x);
 	var emptY = parseInt(y);
 
 	if (emptX < 60){
-		for (var i =0; i<tile.length; i++){
-			if (parseInt(tile[i].style.left) - 20 == emptX && parseInt(tile[i].style.top) == emptY){
+		for (i =0; i<tile.length; i+= 1){
+			if (parseInt(tile[i].style.left) - 20 === emptX && parseInt(tile[i].style.top) === emptY){
 				return i;
 			}
 		}
@@ -612,14 +613,16 @@ function shufLeft (x, y){
 		return -1;
 	} 
 }
+
 function shufDown(x, y){
+	var i;
 	var emptX = parseInt(x);
 	var emptY = parseInt(y);
 
 	if (emptY > 0){
-		for (var i=0; i<tile.length; i++)
+		for (i=0; i<tile.length; i+= 1)
 		{
-			if (parseInt(tile[i].style.top) + 20 == emptY && parseInt(tile[i].style.left) == emptX){
+			if (parseInt(tile[i].style.top) + 20 === emptY && parseInt(tile[i].style.left) === emptX){
 				return i;
 			}
 		} 
@@ -629,14 +632,16 @@ function shufDown(x, y){
 		return -1;
 	}
 }
+
 function shufUp (x, y){
+	var i;
 	var emptX = parseInt(x);
 	var emptY = parseInt(y);
 
 	if (emptY < 60 ){
-		for (var i=0; i<tile.length; i++)
+		for (i=0; i<tile.length; i+= 1)
 		{
-			if (parseInt(tile[i].style.top) - 20 == emptY && parseInt(tile[i].style.left) == emptX){
+			if (parseInt(tile[i].style.top) - 20 === emptY && parseInt(tile[i].style.left) === emptX){
 				return i;
 			}
 		}
@@ -653,7 +658,7 @@ function moveRight(x, y, i){
 	var emptY = parseInt(y); // emptyY
 
 	if (emptX > 0){
-			if (parseInt(tile[i].style.left) + 20 == emptX && parseInt(tile[i].style.top) == emptY){
+			if (parseInt(tile[i].style.left) + 20 === emptX && parseInt(tile[i].style.top) === emptY){
 				return true;
 			} 
 	}
@@ -669,8 +674,7 @@ function moveLeft (x, y, i){
 
 
 	if (emptX < 60){
-			if (parseInt(tile[i].style.left) - 20 == emptX && parseInt(tile[i].style.top) == emptY){
-				console.log("i = " + i);
+			if (parseInt(tile[i].style.left) - 20 === emptX && parseInt(tile[i].style.top) === emptY){
 				return true;
 			}
 	}
@@ -685,7 +689,7 @@ function moveDown(x, y,i){
 	var emptY = parseInt(y);
 
 	if (emptY > 0){
-			if (parseInt(tile[i].style.top) + 20 == emptY && parseInt(tile[i].style.left) == emptX){
+			if (parseInt(tile[i].style.top) + 20 === emptY && parseInt(tile[i].style.left) === emptX){
 				return true;
 			}
 	}
@@ -700,7 +704,7 @@ function moveUp (x, y, i){
 	var emptY = parseInt(y);
 
 	if (emptY < 60 ){
-			if (parseInt(tile[i].style.top) - 20 == emptY && parseInt(tile[i].style.left) == emptX){
+			if (parseInt(tile[i].style.top) - 20 === emptY && parseInt(tile[i].style.left) === emptX){
 				return true;
 			}
 	}
