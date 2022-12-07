@@ -46,24 +46,19 @@ emptyY = "0vmin";
 		tile[i].style.color = "rgba(0,0,0,0)";
 		tile[i].style.textShadow = "none";
 		
-
-		//my image looks better with top right corner missing, this makes the top right corner the empty space
+		// my image looks better with top right corner missing, 
+		// this makes the top right corner the empty space
 		if(i >= 3){
-		
-		tile[i].style.left = ((i+1)%4*20)+"vmin"; 
+		tile[i].style.left = (parseInt((i+1)%4*20))+"vmin"; 
 		tile[i].style.top = (parseInt((i+1)/4)*20) + "vmin";
 		tile[i].style.backgroundPosition= "-" + tile[i].style.left + " " + "-" + tile[i].style.top; 
 		tile[i].style.backgroundImage=imgURL;
 		tile[i].style.backgroundSize= "80vmin";
-
 		}
 
 		else{
-		
-		tile[i].style.left = (i%4*20)+"vmin";
-
+		tile[i].style.left = (parseInt(i%4*20)) +"vmin";
 		tile[i].style.top = (parseInt(i/4)*20) + "vmin";
-
 		tile[i].style.backgroundPosition= "-" + tile[i].style.left + " " + "-" + tile[i].style.top; 
 		tile[i].style.backgroundImage=imgURL;
 		tile[i].style.backgroundSize= "80vmin";
@@ -291,7 +286,7 @@ emptyY = "0vmin";
 		};
 	}
 	 
-	 //displays number labels on tiles as hint
+	 //displays number labels on tiles as hint ––––––––––––––––––––––––––––––
 	toggleNumbers.onclick = function(){
 		displayNumbers = !displayNumbers;
 
@@ -311,7 +306,7 @@ emptyY = "0vmin";
 		}
 	};
 	
-	//shuffles the pieces
+	//shuffles the pieces ––––––––––––––––––––––––––––––––––––––––
 	shuffle.onclick = function(){
 		var rand;
 		var temp;
